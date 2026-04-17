@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: franquiciasdb
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    container_name: franquicias-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/franquiciasdb
+    restart: always
+
+volumes:
+  mongo_data:
