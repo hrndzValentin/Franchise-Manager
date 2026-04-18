@@ -20,7 +20,7 @@ El sistema está diseñado siguiendo un modelo **NoSQL embebido en MongoDB**, op
 ## ⚙️ Tecnologías utilizadas
 
 * **Java 21**
-* **Spring Boot 3.x**
+* **Spring Boot 3.5.13**
 * **Spring WebFlux (programación reactiva)**
 * **Spring Data MongoDB Reactive**
 * **MongoDB**
@@ -176,7 +176,7 @@ webTestClient.post()
     .uri("/api/franquicias")
     .bodyValue(request)
     .exchange()
-    .expectStatus().isOk();
+    .expectStatus().isOk(); 
 ```
 
 ---
