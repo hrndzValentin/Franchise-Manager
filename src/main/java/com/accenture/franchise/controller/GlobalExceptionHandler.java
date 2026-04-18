@@ -14,7 +14,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 🔴 404
+    // 404 - Not found
     @ExceptionHandler(NotFoundException.class)
     public Mono<ResponseEntity<ErrorResponse>> handleNotFound(
             NotFoundException ex,
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
         return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(error));
     }
 
-    // 🟠 400 - errores de negocio
+    // 🟠 400 - Bad Request
     @ExceptionHandler(BadRequestException.class)
     public Mono<ResponseEntity<ErrorResponse>> handleBadRequest(
             BadRequestException ex,
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
         return Mono.just(ResponseEntity.badRequest().body(error));
     }
 
-    // 🟡 400 - validaciones @Valid
+    // 🟡 400 - validaciones
     @ExceptionHandler(org.springframework.web.bind.support.WebExchangeBindException.class)
     public Mono<ResponseEntity<ErrorResponse>> handleValidation(
             org.springframework.web.bind.support.WebExchangeBindException ex,
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         return Mono.just(ResponseEntity.badRequest().body(error));
     }
 
-    // 🔥 fallback (muy importante)
+    // fallback (excepciones generales)
     @ExceptionHandler(Exception.class)
     public Mono<ResponseEntity<ErrorResponse>> handleGeneric(
             Exception ex,
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 🧩 helper
+    // helper
     private ErrorResponse buildError(
             HttpStatus status,
             String message,

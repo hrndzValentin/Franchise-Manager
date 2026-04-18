@@ -16,7 +16,7 @@ public class FranquiciaController {
 
     private final FranquiciaService franquiciaService;
 
-    // ✅ Crear franquicia
+    // Crear franquicia
     @PostMapping
     public Mono<ResponseEntity<Franquicia>> crearFranquicia(
             @RequestBody @Valid CrearFranquiciaRequest request) {
@@ -25,7 +25,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Agregar sucursal
+    // Agregar sucursal
     @PostMapping("/{franquiciaId}/sucursales")
     public Mono<ResponseEntity<Franquicia>> agregarSucursal(
             @PathVariable String franquiciaId,
@@ -35,7 +35,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Agregar producto
+    // Agregar producto
     @PostMapping("/{franquiciaId}/sucursales/{sucursalId}/productos")
     public Mono<ResponseEntity<Franquicia>> agregarProducto(
             @PathVariable String franquiciaId,
@@ -51,7 +51,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Eliminar producto
+    // Eliminar producto
     @DeleteMapping("/{franquiciaId}/sucursales/{sucursalId}/productos/{productoId}")
     public Mono<ResponseEntity<Franquicia>> eliminarProducto(
             @PathVariable String franquiciaId,
@@ -62,7 +62,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Actualizar stock
+    // Actualizar stock
     @PatchMapping("/{franquiciaId}/productos/{productoId}/stock")
     public Mono<ResponseEntity<Franquicia>> actualizarStock(
             @PathVariable String franquiciaId,
@@ -77,7 +77,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Actualizar nombre franquicia
+    // Actualizar nombre franquicia
     @PatchMapping("/{franquiciaId}/nombre")
     public Mono<ResponseEntity<Franquicia>> actualizarNombreFranquicia(
             @PathVariable String franquiciaId,
@@ -88,7 +88,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Actualizar nombre sucursal
+    // Actualizar nombre sucursal
     @PatchMapping("/{franquiciaId}/sucursales/{sucursalId}/nombre")
     public Mono<ResponseEntity<Franquicia>> actualizarNombreSucursal(
             @PathVariable String franquiciaId,
@@ -100,7 +100,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // ✅ Actualizar nombre producto
+    // Actualizar nombre producto
     @PatchMapping("/{franquiciaId}/productos/{productoId}/nombre")
     public Mono<ResponseEntity<Franquicia>> actualizarNombreProducto(
             @PathVariable String franquiciaId,
@@ -112,7 +112,7 @@ public class FranquiciaController {
                 .map(ResponseEntity::ok);
     }
 
-    // 🔥 Endpoint clave
+    // Obtener top-stock productos por sucursal
     @GetMapping("/{franquiciaId}/top-productos")
     public Flux<TopProductoDTO> obtenerTopProductos(@PathVariable String franquiciaId) {
         return franquiciaService.obtenerTopProductosPorSucursal(franquiciaId);
