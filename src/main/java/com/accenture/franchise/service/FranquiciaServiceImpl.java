@@ -1,4 +1,5 @@
 package com.accenture.franchise.service;
+import com.accenture.franchise.exception.NotFoundException;
 import com.accenture.franchise.dto.TopProductoDTO;
 import com.accenture.franchise.model.Franquicia;
 import com.accenture.franchise.model.Producto;
@@ -19,7 +20,6 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     private final FranquiciaRepository franquiciaRepository;
 
     // Crear franquicia
-    @Override
     public Mono<Franquicia> crearFranquicia(String nombre) {
         Franquicia franquicia = Franquicia.builder()
                 .id(UUID.randomUUID().toString())
@@ -30,10 +30,9 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Agregar sucursal
-    @Override
     public Mono<Franquicia> agregarSucursal(String franquiciaId, String nombreSucursal) {
         return franquiciaRepository.findById(franquiciaId)
-                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Franquicia no encontrada")))
                 .flatMap(f -> {
                     Sucursal sucursal = Sucursal.builder()
                             .id(UUID.randomUUID().toString())
@@ -46,16 +45,15 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Agregar producto
-    @Override
     public Mono<Franquicia> agregarProducto(String franquiciaId, String sucursalId, String nombreProducto, Integer stock) {
         return franquiciaRepository.findById(franquiciaId)
-                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Franquicia no encontrada")))
                 .flatMap(f -> {
 
                     Sucursal sucursal = f.getSucursales().stream()
                             .filter(s -> s.getId().equals(sucursalId))
                             .findFirst()
-                            .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"));
+                            .orElseThrow(() -> new NotFoundException("Sucursal no encontrada"));
 
                     Producto producto = Producto.builder()
                             .id(UUID.randomUUID().toString())
@@ -70,10 +68,9 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Eliminar producto
-    @Override
     public Mono<Franquicia> eliminarProducto(String franquiciaId, String sucursalId, String productoId) {
         return franquiciaRepository.findById(franquiciaId)
-                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Franquicia no encontrada")))
                 .flatMap(f -> {
 
                     f.getSucursales().forEach(s -> {
@@ -91,10 +88,9 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Actualizar stock
-    @Override
     public Mono<Franquicia> actualizarStock(String franquiciaId, String productoId, Integer stock) {
         return franquiciaRepository.findById(franquiciaId)
-                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Franquicia no encontrada")))
                 .flatMap(f -> {
 
                     f.getSucursales().forEach(s ->
@@ -110,10 +106,9 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Actualizar nombre franquicia
-    @Override
     public Mono<Franquicia> actualizarNombreFranquicia(String franquiciaId, String nuevoNombre) {
         return franquiciaRepository.findById(franquiciaId)
-                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Franquicia no encontrada")))
                 .flatMap(f -> {
                     f.setNombre(nuevoNombre);
                     return franquiciaRepository.save(f);
@@ -121,7 +116,6 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Actualizar nombre sucursal
-    @Override
     public Mono<Franquicia> actualizarNombreSucursal(String franquiciaId, String sucursalId, String nuevoNombre) {
         return franquiciaRepository.findById(franquiciaId)
                 .flatMap(f -> {
@@ -129,7 +123,7 @@ public class FranquiciaServiceImpl implements FranquiciaService {
                     f.getSucursales().stream()
                             .filter(s -> s.getId().equals(sucursalId))
                             .findFirst()
-                            .orElseThrow(() -> new RuntimeException("Sucursal no encontrada"))
+                            .orElseThrow(() -> new NotFoundException("Sucursal no encontrada"))
                             .setNombre(nuevoNombre);
 
                     return franquiciaRepository.save(f);
@@ -137,7 +131,6 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Actualizar nombre producto
-    @Override
     public Mono<Franquicia> actualizarNombreProducto(String franquiciaId, String productoId, String nuevoNombre) {
         return franquiciaRepository.findById(franquiciaId)
                 .flatMap(f -> {
@@ -154,10 +147,9 @@ public class FranquiciaServiceImpl implements FranquiciaService {
     }
 
     // Obtener top-stock productos por sucursal
-    @Override
     public Flux<TopProductoDTO> obtenerTopProductosPorSucursal(String franquiciaId) {
         return franquiciaRepository.findById(franquiciaId)
-                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .switchIfEmpty(Mono.error(new NotFoundException("Franquicia no encontrada")))
                 .flatMapMany(f -> Flux.fromIterable(f.getSucursales()))
                 .flatMap(sucursal -> {
                     Producto top = sucursal.getProductos().stream()

@@ -1,4 +1,4 @@
-package com.accenture.franchise.dto;
+package com.accenture.franchise.exception;
 import lombok.Builder;
 import lombok.Data;
 

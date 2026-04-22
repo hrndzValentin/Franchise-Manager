@@ -1,7 +1,7 @@
 package com.accenture.franchise.controller;
-import com.accenture.franchise.dto.BadRequestException;
-import com.accenture.franchise.dto.ErrorResponse;
-import com.accenture.franchise.dto.NotFoundException;
+import com.accenture.franchise.exception.BadRequestException;
+import com.accenture.franchise.exception.ErrorResponse;
+import com.accenture.franchise.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.accenture.franchise.dto;
+package com.accenture.franchise.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
